@@ -8,7 +8,7 @@
  */
 int _atoi(char *s)
 {
-	unsigned int result = 0;
+	int result = 0;
 	int sign = 1;
 	int i = 0;
 	int digit_found = 0;
@@ -18,7 +18,7 @@ int _atoi(char *s)
 	{
 		if (s[i] == '-')
 		{
-			sign *= -1;
+			sign = -sign;
 		}
 		else if (s[i] == '+')
 		{
@@ -27,7 +27,15 @@ int _atoi(char *s)
 		else if (s[i] >= '0' && s[i] <= '9')
 		{
 			digit_found = 1;
-			result = result * 10 + (s[i] - '0');
+			/* Build result with sign applied directly */
+			if (sign == 1)
+			{
+				result = result * 10 + (s[i] - '0');
+			}
+			else
+			{
+				result = result * 10 - (s[i] - '0');
+			}
 		}
 		else if (digit_found)
 		{
@@ -38,8 +46,5 @@ int _atoi(char *s)
 		i++;
 	}
 
-	if (sign == 1)
-		return ((int)result);
-	else
-		return (-((int)result));
+	return (result);
 }
