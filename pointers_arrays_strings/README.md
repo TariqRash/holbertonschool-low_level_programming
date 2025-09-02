@@ -1,33 +1,36 @@
-# C - Pointers, arrays and strings
+# C - More pointers, arrays and strings
 
-This project covers the fundamentals of pointers, arrays, and strings in C programming.
+Advanced project covering more complex operations with pointers, arrays, and strings.
 
 ## Learning Objectives
 
-- What are pointers and how to use them
-- What are arrays and how to use them  
-- What are the differences between pointers and arrays
-- How to use strings and how to manipulate them
-- Scope of variables
+- Advanced pointer manipulation
+- String processing and manipulation
+- Array operations and algorithms
+- Memory management concepts
+- Buffer operations
 
 ## Files
 
-- `0-reset_to_98.c` - Updates the value a pointer points to to 98
-- `1-swap.c` - Swaps the values of two integers
-- `2-strlen.c` - Returns the length of a string
-- `3-puts.c` - Prints a string followed by a new line
-- `4-print_rev.c` - Prints a string in reverse
-- `5-rev_string.c` - Reverses a string
-- `6-puts2.c` - Prints every other character of a string
-- `7-puts_half.c` - Prints half of a string
-- `8-print_array.c` - Prints n elements of an array
-- `9-strcpy.c` - Copies a string
-- `100-atoi.c` - Converts a string to an integer
-- `main.h` - Header file with function prototypes
+### Mandatory Tasks
+- `0-strcat.c` - Concatenates two strings
+- `1-strncat.c` - Concatenates strings with byte limit
+- `2-strncpy.c` - Copies strings with byte limit
+- `3-strcmp.c` - Compares two strings
+- `4-rev_array.c` - Reverses array of integers
+- `5-string_toupper.c` - Converts string to uppercase
+- `6-cap_string.c` - Capitalizes words in string
+- `7-leet.c` - Encodes string to 1337 speak
+
+### Advanced Tasks
+- `100-rot13.c` - ROT13 string encoding
+- `101-print_number.c` - Prints integers using only _putchar
+- `102-magic.c` - Pointer arithmetic magic
+- `103-infinite_add.c` - Adds very large numbers
+- `104-print_buffer.c` - Prints buffer in hex format
 
 ## Compilation
 
-All files are compiled with:
-```
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89
+```bash
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 [files]
 ```
