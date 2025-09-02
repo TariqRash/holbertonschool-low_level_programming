@@ -1,6 +1,42 @@
 #include "main.h"
 
 /**
+ * _strlen - returns the length of a string
+ * @s: string to measure
+ *
+ * Return: length of string
+ */
+int _strlen(char *s)
+{
+	int len = 0;
+
+	while (s[len])
+		len++;
+
+	return (len);
+}
+
+/**
+ * reverse_string - reverses a string in place
+ * @str: string to reverse
+ * @len: length of string
+ *
+ * Return: void
+ */
+void reverse_string(char *str, int len)
+{
+	int i;
+	char temp;
+
+	for (i = 0; i < len / 2; i++)
+	{
+		temp = str[i];
+		str[i] = str[len - 1 - i];
+		str[len - 1 - i] = temp;
+	}
+}
+
+/**
  * infinite_add - adds two numbers
  * @n1: first number string
  * @n2: second number string
@@ -11,31 +47,27 @@
  */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int len1 = 0, len2 = 0, i, j, k, carry = 0, sum;
+	int len1, len2, i, j, k, carry, sum;
 
-	/* Calculate lengths */
-	while (n1[len1])
-		len1++;
-	while (n2[len2])
-		len2++;
+	len1 = _strlen(n1);
+	len2 = _strlen(n2);
 
-	/* Check if result fits in buffer */
 	if (len1 >= size_r || len2 >= size_r)
 		return (0);
 
 	i = len1 - 1;
 	j = len2 - 1;
 	k = 0;
+	carry = 0;
 
-	/* Add from right to left */
 	while (i >= 0 || j >= 0 || carry)
 	{
 		sum = carry;
+
 		if (i >= 0)
 			sum += n1[i--] - '0';
 		if (j >= 0)
 			sum += n2[j--] - '0';
-
 		if (k >= size_r - 1)
 			return (0);
 
@@ -43,14 +75,8 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 		carry = sum / 10;
 	}
 
-	/* Reverse the result */
 	r[k] = '\0';
-	for (i = 0; i < k / 2; i++)
-	{
-		char temp = r[i];
-		r[i] = r[k - 1 - i];
-		r[k - 1 - i] = temp;
-	}
+	reverse_string(r, k);
 
 	return (r);
 }
