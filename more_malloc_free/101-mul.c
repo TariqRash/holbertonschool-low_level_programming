@@ -2,35 +2,43 @@
 #include <stdlib.h>
 
 /**
- * _isdigit - checks if character is a digit
- * @c: character to check
+ * is_digit - checks if a string contains a non-digit char
+ * @s: string to be evaluated
  *
- * Return: 1 if digit, 0 otherwise
+ * Return: 0 if a non-digit is found, 1 otherwise
  */
-int _isdigit(char c)
+int is_digit(char *s)
 {
-	return (c >= '0' && c <= '9');
+	int i = 0;
+
+	while (s[i])
+	{
+		if (s[i] < '0' || s[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /**
  * _strlen - returns the length of a string
- * @s: string to check
+ * @s: string to evaluate
  *
- * Return: length of string
+ * Return: the length of the string
  */
 int _strlen(char *s)
 {
-	int len = 0;
+	int i = 0;
 
-	while (s[len])
-		len++;
-	return (len);
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
 /**
- * print_error - prints Error and exits
+ * errors - handles errors for main
  */
-void print_error(void)
+void errors(void)
 {
 	_putchar('E');
 	_putchar('r');
@@ -42,86 +50,53 @@ void print_error(void)
 }
 
 /**
- * validate_args - validates arguments
- * @argc: argument count
- * @argv: argument vector
- */
-void validate_args(int argc, char **argv)
-{
-	int i, j;
-
-	if (argc != 3)
-		print_error();
-
-	for (i = 1; i < 3; i++)
-	{
-		if (argv[i] == NULL || argv[i][0] == '\0')
-			print_error();
-		for (j = 0; argv[i][j]; j++)
-		{
-			if (!_isdigit(argv[i][j]))
-				print_error();
-		}
-	}
-}
-
-/**
- * multiply - multiplies two number strings
- * @num1: first number
- * @num2: second number
- */
-void multiply(char *num1, char *num2)
-{
-	int len1, len2, len, i, j, n1, n2, sum;
-	int *result;
-
-	len1 = _strlen(num1);
-	len2 = _strlen(num2);
-	len = len1 + len2;
-
-	result = malloc(sizeof(int) * len);
-	if (result == NULL)
-		exit(98);
-
-	for (i = 0; i < len; i++)
-		result[i] = 0;
-
-	for (i = len1 - 1; i >= 0; i--)
-	{
-		for (j = len2 - 1; j >= 0; j--)
-		{
-			n1 = num1[i] - '0';
-			n2 = num2[j] - '0';
-			sum = n1 * n2 + result[i + j + 1];
-			result[i + j + 1] = sum % 10;
-			result[i + j] += sum / 10;
-		}
-	}
-
-	i = 0;
-	while (i < len && result[i] == 0)
-		i++;
-
-	if (i == len)
-		_putchar('0');
-	else
-		while (i < len)
-			_putchar(result[i++] + '0');
-
-	_putchar('\n');
-	free(result);
-}
-
-/**
  * main - multiplies two positive numbers
  * @argc: number of arguments
  * @argv: array of arguments
  *
- * Return: 0 on success
+ * Return: always 0 (Success)
  */
 int main(int argc, char *argv[])
 {
-	validate_args(argc, argv);
-	multiply(argv[1], argv[2]);
+	char *s1, *s2;
+	int len1, len2, len, i, carry, digit1, digit2, *result, a = 0;
+
+	s1 = argv[1];
+	s2 = argv[2];
+	if (argc != 3 || !is_digit(s1) || !is_digit(s2))
+		errors();
+	len1 = _strlen(s1);
+	len2 = _strlen(s2);
+	len = len1 + len2 + 1;
+	result = malloc(sizeof(int) * len);
+	if (!result)
+		return (1);
+	for (i = 0; i <= len1 + len2; i++)
+		result[i] = 0;
+	for (len1 = len1 - 1; len1 >= 0; len1--)
+	{
+		digit1 = s1[len1] - '0';
+		carry = 0;
+		for (len2 = _strlen(s2) - 1; len2 >= 0; len2--)
+		{
+			digit2 = s2[len2] - '0';
+			carry += result[len1 + len2 + 1] + (digit1 * digit2);
+			result[len1 + len2 + 1] = carry % 10;
+			carry /= 10;
+		}
+		if (carry > 0)
+			result[len1 + len2 + 1] += carry;
+	}
+	for (i = 0; i < len - 1; i++)
+	{
+		if (result[i])
+			a = 1;
+		if (a)
+			_putchar(result[i] + '0');
+	}
+	if (!a)
+		_putchar('0');
+	_putchar('\n');
+	free(result);
 	return (0);
 }
