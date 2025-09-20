@@ -1,11 +1,14 @@
 #include "main.h"
 
+<<<<<<< HEAD
 /**
  * count_words - counts the number of words in a string
  * @str: string to analyze
  *
  * Return: number of words
  */
+=======
+>>>>>>> origin/main
 int count_words(char *str)
 {
 	int count = 0, i = 0, in_word = 0;
@@ -27,6 +30,7 @@ int count_words(char *str)
 	return (count);
 }
 
+<<<<<<< HEAD
 /**
  * word_len - gets the length of a word
  * @str: string
@@ -34,6 +38,8 @@ int count_words(char *str)
  *
  * Return: length of word
  */
+=======
+>>>>>>> origin/main
 int word_len(char *str, int start)
 {
 	int len = 0;
@@ -43,6 +49,7 @@ int word_len(char *str, int start)
 	return (len);
 }
 
+<<<<<<< HEAD
 /**
  * strtow - splits a string into words
  * @str: string to split
@@ -54,6 +61,8 @@ int word_len(char *str, int start)
  *
  * Return: pointer to array of strings (words)
  */
+=======
+>>>>>>> origin/main
 char **strtow(char *str)
 {
 	char **words;
@@ -61,6 +70,7 @@ char **strtow(char *str)
 
 	if (str == NULL || *str == '\0')
 		return (NULL);
+<<<<<<< HEAD
 
 	word_count = count_words(str);
 	if (word_count == 0)
@@ -70,16 +80,29 @@ char **strtow(char *str)
 	if (words == NULL)
 		return (NULL);
 
+=======
+	word_count = count_words(str);
+	if (word_count == 0)
+		return (NULL);
+	words = malloc(sizeof(char *) * (word_count + 1));
+	if (words == NULL)
+		return (NULL);
+>>>>>>> origin/main
 	i = 0;
 	j = 0;
 	while (i < word_count)
 	{
 		while (str[j] == ' ')
 			j++;
+<<<<<<< HEAD
 
 		word_start = j;
 		len = word_len(str, j);
 
+=======
+		word_start = j;
+		len = word_len(str, j);
+>>>>>>> origin/main
 		words[i] = malloc(sizeof(char) * (len + 1));
 		if (words[i] == NULL)
 		{
@@ -88,6 +111,7 @@ char **strtow(char *str)
 			free(words);
 			return (NULL);
 		}
+<<<<<<< HEAD
 
 		for (k = 0; k < len; k++)
 			words[i][k] = str[word_start + k];
@@ -97,6 +121,14 @@ char **strtow(char *str)
 		i++;
 	}
 
+=======
+		for (k = 0; k < len; k++)
+			words[i][k] = str[word_start + k];
+		words[i][len] = '\0';
+		j += len;
+		i++;
+	}
+>>>>>>> origin/main
 	words[i] = NULL;
 	return (words);
 }

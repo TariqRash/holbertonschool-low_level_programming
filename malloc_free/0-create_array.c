@@ -5,8 +5,13 @@
  * @size: the size of the array to create
  * @c: the char to initialize the array with
  *
+<<<<<<< HEAD
  * Description: This function creates a dynamic array of characters
  * and initializes every element with the specified character.
+=======
+ * Description: This function is like a factory for character arrays.
+ * It's so efficient, even malloc would be jealous!
+>>>>>>> origin/main
  *
  * Return: pointer to the array, or NULL if it fails or size = 0
  */

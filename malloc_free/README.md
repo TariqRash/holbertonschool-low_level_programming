@@ -23,4 +23,8 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89
 ```
 
 ## Author
+<<<<<<< HEAD
 Created with dynamic memory mastery!
+=======
+Created with 💻 and lots of ☕ by a future C wizard!
+>>>>>>> origin/main
