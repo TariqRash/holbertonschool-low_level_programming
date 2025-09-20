@@ -16,10 +16,8 @@ unsigned int *initDigitArray(size_t size)
 	arr = malloc(sizeof(unsigned int) * size);
 	if (!arr)
 		return (NULL);
-
 	for (i = 0; i < size; i++)
 		arr[i] = 0;
-
 	return (arr);
 }
 
@@ -40,23 +38,17 @@ void stringIntMultiply(unsigned int *prod_digits, char *n1_digits,
 
 	if (prod_digits == NULL || n1_digits == NULL || n2_digits == NULL)
 		return;
-
 	for (i = n1_len - 1; i >= 0; i--)
 	{
 		sum = 0;
 		digit1 = n1_digits[i] - '0';
-
 		for (j = n2_len - 1; j >= 0; j--)
 		{
 			digit2 = n2_digits[j] - '0';
-
 			sum += prod_digits[i + j + 1] + (digit1 * digit2);
-
 			prod_digits[i + j + 1] = sum % 10;
-
 			sum /= 10;
 		}
-
 		if (sum > 0)
 			prod_digits[i + j + 1] += sum;
 	}
@@ -77,7 +69,6 @@ int stringIsPosInt(char *s)
 		if (s[i] < '0' || s[i] > '9')
 			return (0);
 	}
-
 	return (1);
 }
 
@@ -112,32 +103,23 @@ int main(int argc, char **argv)
 	if (argc != 3 || !stringIsPosInt(argv[1]) ||
 	    !stringIsPosInt(argv[2]))
 		error(98);
-
 	for (i = 0, av1_len = 0; argv[1][i]; i++)
 		av1_len++;
-
 	for (i = 0, av2_len = 0; argv[2][i]; i++)
 		av2_len++;
-
 	prod_len = av1_len + av2_len;
 	prod_digits = initDigitArray(prod_len);
 	if (prod_digits == NULL)
 		error(98);
-
 	stringIntMultiply(prod_digits, argv[1], argv[2], av1_len, av2_len);
-
 	for (i = 0; !prod_digits[i] && i < prod_len; i++)
 	{
 	}
-
 	if (i == prod_len)
 		_putchar('0');
-
 	for (; i < prod_len; i++)
 		_putchar(prod_digits[i] + '0');
 	_putchar('\n');
-
 	free(prod_digits);
-
 	return (0);
 }
