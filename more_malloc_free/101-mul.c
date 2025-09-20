@@ -49,6 +49,9 @@ void validate_number(char *s)
 {
 	int i;
 
+	if (s == NULL || s[0] == '\0')
+		print_error();
+
 	for (i = 0; s[i]; i++)
 	{
 		if (!_isdigit(s[i]))
@@ -68,10 +71,18 @@ void multiply(char *num1, char *num2)
 
 	len1 = _strlen(num1);
 	len2 = _strlen(num2);
-	len = len1 + len2;
+	
+	if (len1 == 0 || len2 == 0)
+	{
+		_putchar('0');
+		_putchar('\n');
+		return;
+	}
 
+	len = len1 + len2;
 	result = malloc(sizeof(int) * len);
-	if (!result)
+	
+	if (result == NULL)
 		print_error();
 
 	for (i = 0; i < len; i++)
