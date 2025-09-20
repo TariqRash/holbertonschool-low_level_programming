@@ -1,148 +1,129 @@
 #include "main.h"
+#include <stdlib.h>
 
-/**
- * _print - moves a string one place to the left and prints the string
- * @str: string to move
- * @l: size of string
- *
- * Return: void
- */
-void _print(char *str, int l)
+int _putchar(char c);
+
+void error_exit(void)
 {
-	int i, j;
-
-	i = j = 0;
-	while (i < l)
-	{
-		if (str[i] != '0')
-			j = 1;
-		if (j || i == l - 1)
-			_putchar(str[i]);
-		i++;
-	}
-
-	_putchar('\n');
-	free(str);
+    _putchar('E');
+    _putchar('r');
+    _putchar('r');
+    _putchar('o');
+    _putchar('r');
+    _putchar('\n');
+    exit(98);
 }
 
-/**
- * mul - multiplies a char with a string and places the answer into dest
- * @n: char to multiply
- * @num: string to multiply
- * @num_index: last non NULL index of num
- * @dest: destination of multiplication
- * @dest_index: highest index to start addition
- *
- * Return: pointer to dest, or NULL on failure
- */
-char *mul(char n, char *num, int num_index, char *dest, int dest_index)
+int str_len(char *s)
 {
-	int j, k, mul, mulrem, add, addrem;
-
-	mulrem = addrem = 0;
-	for (j = num_index, k = dest_index; j >= 0; j--, k--)
-	{
-		mul = (n - '0') * (num[j] - '0') + mulrem;
-		mulrem = mul / 10;
-		add = (dest[k] - '0') + (mul % 10) + addrem;
-		addrem = add / 10;
-		dest[k] = add % 10 + '0';
-	}
-	for (addrem += mulrem; k >= 0 && addrem; k--)
-	{
-		add = (dest[k] - '0') + addrem;
-		addrem = add / 10;
-		dest[k] = add % 10 + '0';
-	}
-	if (addrem)
-	{
-		return (NULL);
-	}
-	return (dest);
+    int len = 0;
+    while (s[len]) len++;
+    return (len);
 }
 
-/**
- * check_for_digits - checks the arguments to ensure they are digits
- * @av: pointer to arguments
- *
- * Return: 0 if digits, 1 if not
- */
-int check_for_digits(char **av)
+int is_num(char *s)
 {
-	int i, j;
-
-	for (i = 1; i < 3; i++)
-	{
-		for (j = 0; av[i][j]; j++)
-		{
-			if (av[i][j] < '0' || av[i][j] > '9')
-				return (1);
-		}
-	}
-	return (0);
+    int i = 0;
+    if (!s[0]) return (0);
+    while (s[i])
+    {
+        if (s[i] < '0' || s[i] > '9') return (0);
+        i++;
+    }
+    return (1);
 }
 
-/**
- * init - initializes a string
- * @str: sting to initialize
- * @l: length of strinf
- *
- * Return: void
- */
-void init(char *str, int l)
+/* Ultra simple: convert to long long if possible */
+int main(int argc, char **argv)
 {
-	int i;
-
-	for (i = 0; i < l; i++)
-		str[i] = '0';
-	str[i] = '\0';
-}
-
-/**
- * main - multiply two numbers
- * @argc: number of arguments
- * @argv: argument vector
- *
- * Return: zero, or exit status of 98 if failure
- */
-
-int main(int argc, char *argv[])
-{
-	int l1, l2, ln, ti, i;
-	char *a;
-	char *t;
-	char e[] = "Error\n";
-
-	if (argc != 3 || check_for_digits(argv))
-	{
-		for (ti = 0; e[ti]; ti++)
-			_putchar(e[ti]);
-		exit(98);
-	}
-	for (l1 = 0; argv[1][l1]; l1++)
-		;
-	for (l2 = 0; argv[2][l2]; l2++)
-		;
-	ln = l1 + l2 + 1;
-	a = malloc(ln * sizeof(char));
-	if (a == NULL)
-	{
-		for (ti = 0; e[ti]; ti++)
-			_putchar(e[ti]);
-		exit(98);
-	}
-	init(a, ln - 1);
-	for (ti = l2 - 1, i = 0; ti >= 0; ti--, i++)
-	{
-		t = mul(argv[2][ti], argv[1], l1 - 1, a, (ln - 2) - i);
-		if (t == NULL)
-		{
-			for (ti = 0; e[ti]; ti++)
-				_putchar(e[ti]);
-			free(a);
-			exit(98);
-		}
-	}
-	_print(a, ln - 1);
-	return (0);
+    unsigned long long n1 = 0, n2 = 0, result;
+    int i, len1, len2;
+    char temp[64];
+    
+    if (argc != 3)
+        error_exit();
+    
+    if (!is_num(argv[1]) || !is_num(argv[2]))
+        error_exit();
+    
+    len1 = str_len(argv[1]);
+    len2 = str_len(argv[2]);
+    
+    /* Check for zero */
+    if ((len1 == 1 && argv[1][0] == '0') || (len2 == 1 && argv[2][0] == '0'))
+    {
+        _putchar('0');
+        _putchar('\n');
+        return (0);
+    }
+    
+    /* If numbers are small enough for unsigned long long */
+    if (len1 <= 18 && len2 <= 18)
+    {
+        /* Convert strings to numbers */
+        for (i = 0; i < len1; i++)
+            n1 = n1 * 10 + (argv[1][i] - '0');
+        for (i = 0; i < len2; i++)
+            n2 = n2 * 10 + (argv[2][i] - '0');
+        
+        result = n1 * n2;
+        
+        /* Convert back to string and print */
+        if (result == 0)
+        {
+            _putchar('0');
+        }
+        else
+        {
+            i = 0;
+            while (result > 0)
+            {
+                temp[i++] = (result % 10) + '0';
+                result /= 10;
+            }
+            while (--i >= 0)
+                _putchar(temp[i]);
+        }
+        _putchar('\n');
+        return (0);
+    }
+    
+    /* For very large numbers, fall back to array method */
+    /* But use single malloc/free */
+    {
+        int len_res = len1 + len2;
+        int *res = malloc(len_res * sizeof(int));
+        int carry, n_1, n_2, sum, j, start;
+        
+        if (!res) error_exit();
+        
+        for (i = 0; i < len_res; i++) res[i] = 0;
+        
+        for (i = len1 - 1; i >= 0; i--)
+        {
+            carry = 0;
+            n_1 = argv[1][i] - '0';
+            for (j = len2 - 1; j >= 0; j--)
+            {
+                n_2 = argv[2][j] - '0';
+                sum = n_1 * n_2 + res[i + j + 1] + carry;
+                carry = sum / 10;
+                res[i + j + 1] = sum % 10;
+            }
+            if (carry > 0) res[i + j + 1] += carry;
+        }
+        
+        start = 0;
+        while (start < len_res && res[start] == 0) start++;
+        
+        if (start == len_res)
+            _putchar('0');
+        else
+            for (i = start; i < len_res; i++)
+                _putchar(res[i] + '0');
+        
+        _putchar('\n');
+        free(res);
+        return (0);
+    }
 }
