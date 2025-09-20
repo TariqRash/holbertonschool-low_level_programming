@@ -42,20 +42,26 @@ void print_error(void)
 }
 
 /**
- * validate_number - validates if string contains only digits
- * @s: string to validate
+ * validate_args - validates arguments
+ * @argc: argument count
+ * @argv: argument vector
  */
-void validate_number(char *s)
+void validate_args(int argc, char **argv)
 {
-	int i;
+	int i, j;
 
-	if (s == NULL || s[0] == '\0')
+	if (argc != 3)
 		print_error();
 
-	for (i = 0; s[i]; i++)
+	for (i = 1; i < 3; i++)
 	{
-		if (!_isdigit(s[i]))
+		if (argv[i] == NULL || argv[i][0] == '\0')
 			print_error();
+		for (j = 0; argv[i][j]; j++)
+		{
+			if (!_isdigit(argv[i][j]))
+				print_error();
+		}
 	}
 }
 
@@ -71,19 +77,11 @@ void multiply(char *num1, char *num2)
 
 	len1 = _strlen(num1);
 	len2 = _strlen(num2);
-	
-	if (len1 == 0 || len2 == 0)
-	{
-		_putchar('0');
-		_putchar('\n');
-		return;
-	}
-
 	len = len1 + len2;
+
 	result = malloc(sizeof(int) * len);
-	
 	if (result == NULL)
-		print_error();
+		exit(98);
 
 	for (i = 0; i < len; i++)
 		result[i] = 0;
@@ -107,10 +105,8 @@ void multiply(char *num1, char *num2)
 	if (i == len)
 		_putchar('0');
 	else
-	{
-		for (; i < len; i++)
-			_putchar(result[i] + '0');
-	}
+		while (i < len)
+			_putchar(result[i++] + '0');
 
 	_putchar('\n');
 	free(result);
@@ -125,13 +121,7 @@ void multiply(char *num1, char *num2)
  */
 int main(int argc, char *argv[])
 {
-	if (argc != 3)
-		print_error();
-
-	validate_number(argv[1]);
-	validate_number(argv[2]);
-
+	validate_args(argc, argv);
 	multiply(argv[1], argv[2]);
-
 	return (0);
 }
