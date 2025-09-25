@@ -11,23 +11,25 @@ void print_all(const char * const format, ...)
 	va_list args;
 	int i = 0;
 	char *str, *sep = "";
-	int found;
 
 	va_start(args, format);
 
 	while (format && format[i])
 	{
-		found = 0;
 		if (format[i] == 99)
-			printf("%s%c", sep, va_arg(args, int)), found = 1;
+			printf("%s%c", sep, va_arg(args, int)), sep = ", ";
 		if (format[i] == 105)
-			printf("%s%d", sep, va_arg(args, int)), found = 1;
+			printf("%s%d", sep, va_arg(args, int)), sep = ", ";
 		if (format[i] == 102)
-			printf("%s%f", sep, va_arg(args, double)), found = 1;
+			printf("%s%f", sep, va_arg(args, double)), sep = ", ";
 		if (format[i] == 115)
-			str = va_arg(args, char *), printf("%s%s", sep, str ? str : "(nil)"), found = 1;
-		
-		sep = found ? ", " : sep;
+		{
+			str = va_arg(args, char *);
+			if (str == NULL)
+				str = "(nil)";
+			printf("%s%s", sep, str);
+			sep = ", ";
+		}
 		i++;
 	}
 
