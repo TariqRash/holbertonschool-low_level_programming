@@ -16,20 +16,15 @@ void print_all(const char * const format, ...)
 
 	while (format && format[i])
 	{
-		if (format[i] == 99)
-			printf("%s%c", sep, va_arg(args, int)), sep = ", ";
-		if (format[i] == 105)
-			printf("%s%d", sep, va_arg(args, int)), sep = ", ";
-		if (format[i] == 102)
-			printf("%s%f", sep, va_arg(args, double)), sep = ", ";
+		if (format[i] == 99 || format[i] == 105 || format[i] == 102 || format[i] == 115)
+			printf("%s", sep), sep = ", ";
+
+		format[i] == 99 && printf("%c", va_arg(args, int));
+		format[i] == 105 && printf("%d", va_arg(args, int));
+		format[i] == 102 && printf("%f", va_arg(args, double));
 		if (format[i] == 115)
-		{
-			str = va_arg(args, char *);
-			if (str == NULL)
-				str = "(nil)";
-			printf("%s%s", sep, str);
-			sep = ", ";
-		}
+			str = va_arg(args, char *), printf("%s", str && *str ? str : "(nil)");
+
 		i++;
 	}
 
