@@ -1,15 +1,17 @@
 section .data
-    hello db "Hello, World", 10
-    hello_len equ $ - hello
+    msg db "Hello, World", 10, 0
+    msg_len equ $ - msg - 1
 
 section .text
-    global _start
+    global main
+    extern printf
+    extern exit
 
-_start:
+main:
     mov rax, 1
     mov rdi, 1
-    mov rsi, hello
-    mov rdx, hello_len
+    mov rsi, msg
+    mov rdx, msg_len
     syscall
 
     mov rax, 60
