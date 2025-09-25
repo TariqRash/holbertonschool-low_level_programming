@@ -11,7 +11,6 @@
  */
 int main(int argc, char *argv[])
 {
-	int num1, num2, result;
 	int (*op_func)(int, int);
 
 	if (argc != 4)
@@ -20,25 +19,19 @@ int main(int argc, char *argv[])
 		exit(98);
 	}
 
-	num1 = atoi(argv[1]);
-	num2 = atoi(argv[3]);
-
 	op_func = get_op_func(argv[2]);
-
 	if (op_func == NULL)
 	{
 		printf("Error\n");
 		exit(99);
 	}
 
-	if ((argv[2][0] == / || argv[2][0] == %) && num2 == 0)
+	if (atoi(argv[3]) == 0 && (*argv[2] == 47 || *argv[2] == 37))
 	{
 		printf("Error\n");
 		exit(100);
 	}
 
-	result = op_func(num1, num2);
-	printf("%d\n", result);
-
+	printf("%d\n", op_func(atoi(argv[1]), atoi(argv[3])));
 	return (0);
 }
