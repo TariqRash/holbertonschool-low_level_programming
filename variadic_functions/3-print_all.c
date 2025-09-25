@@ -10,40 +10,29 @@ void print_all(const char * const format, ...)
 {
 	va_list args;
 	int i = 0;
-	char *str;
-	char *sep = "";
+	char *str, *sep = "";
 
 	va_start(args, format);
 
-	if (format)
+	while (format && format[i])
 	{
-		while (format[i])
+		if (format[i] == 99 || format[i] == 105 || format[i] == 102 || format[i] == 115)
 		{
-			if (format[i] == 99)
-			{
-				printf("%s%c", sep, va_arg(args, int));
-				sep = ", ";
-			}
-			if (format[i] == 105)
-			{
-				printf("%s%d", sep, va_arg(args, int));
-				sep = ", ";
-			}
-			if (format[i] == 102)
-			{
-				printf("%s%f", sep, va_arg(args, double));
-				sep = ", ";
-			}
-			if (format[i] == 115)
-			{
-				str = va_arg(args, char *);
-				if (str == NULL)
-					str = "(nil)";
-				printf("%s%s", sep, str);
-				sep = ", ";
-			}
-			i++;
+			printf("%s", sep);
+			sep = ", ";
 		}
+		if (format[i] == 99)
+			printf("%c", va_arg(args, int));
+		if (format[i] == 105)
+			printf("%d", va_arg(args, int));
+		if (format[i] == 102)
+			printf("%f", va_arg(args, double));
+		if (format[i] == 115)
+		{
+			str = va_arg(args, char *);
+			printf("%s", str ? str : "(nil)");
+		}
+		i++;
 	}
 
 	printf("\n");
