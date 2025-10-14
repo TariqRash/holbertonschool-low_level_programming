@@ -3,28 +3,30 @@
 #include <stdlib.h>
 
 /**
- * main - copies the content of a file to another file
- * @argc: number of arguments
- * @argv: array of arguments
- *
- * Return: 0 on success
+ * close_fd - closes a file descriptor with error checking
+ * @fd: file descriptor to close
  */
-int main(int argc, char *argv[])
+void close_fd(int fd)
 {
-	int fd_from, fd_to, r, w;
-	char *buffer;
-
-	if (argc != 3)
+	if (close(fd) == -1)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+		exit(100);
 	}
-	buffer = malloc(sizeof(char) * 1024);
-	if (buffer == NULL)
-		exit(99);
-	fd_from = open(argv[1], O_RDONLY);
+}
+
+/**
+ * copy_file - copies content from one file to another
+ * @fd_from: source file descriptor
+ * @fd_to: destination file descriptor
+ * @argv: argument array for error messages
+ * @buffer: buffer for reading/writing
+ */
+void copy_file(int fd_from, int fd_to, char **argv, char *buffer)
+{
+	int r, w;
+
 	r = read(fd_from, buffer, 1024);
-	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	do {
 		if (fd_from == -1 || r == -1)
 		{
@@ -42,16 +44,33 @@ int main(int argc, char *argv[])
 		r = read(fd_from, buffer, 1024);
 		fd_to = open(argv[2], O_WRONLY | O_APPEND);
 	} while (r > 0);
+}
+
+/**
+ * main - copies the content of a file to another file
+ * @argc: number of arguments
+ * @argv: array of arguments
+ *
+ * Return: 0 on success
+ */
+int main(int argc, char *argv[])
+{
+	int fd_from, fd_to;
+	char *buffer;
+
+	if (argc != 3)
+	{
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		exit(97);
+	}
+	buffer = malloc(sizeof(char) * 1024);
+	if (buffer == NULL)
+		exit(99);
+	fd_from = open(argv[1], O_RDONLY);
+	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	copy_file(fd_from, fd_to, argv, buffer);
 	free(buffer);
-	if (close(fd_from) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
-		exit(100);
-	}
-	if (close(fd_to) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
-		exit(100);
-	}
+	close_fd(fd_from);
+	close_fd(fd_to);
 	return (0);
 }
