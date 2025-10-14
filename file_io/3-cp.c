@@ -34,7 +34,9 @@ int main(int argc, char *argv[])
 		exit(99);
 	}
 
-	while ((bytes_read = read(fd_from, buffer, 1024)) > 0)
+	bytes_read = read(fd_from, buffer, 1024);
+
+	while (bytes_read > 0)
 	{
 		bytes_written = write(fd_to, buffer, bytes_read);
 		if (bytes_written != bytes_read)
@@ -44,6 +46,7 @@ int main(int argc, char *argv[])
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 			exit(99);
 		}
+		bytes_read = read(fd_from, buffer, 1024);
 	}
 
 	if (bytes_read == -1)
